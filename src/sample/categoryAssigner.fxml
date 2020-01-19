@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.CategoryAssigner">
+   <children>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0" spacing="10.0">
+         <children>
+            <Label text="Assign Category">
+               <font>
+                  <Font size="20.0" />
+               </font></Label>
+            <Label fx:id="idLabel" text="Label" />
+            <ComboBox fx:id="catDropdown" prefWidth="150.0" promptText="Select Category" />
+            <Label text="OR" />
+            <TextField fx:id="newCatTextField" promptText="New Category" />
+            <Button fx:id="setButton" mnemonicParsing="false" onAction="#setCategory" text="Set" />
+         </children>
+         <padding>
+            <Insets left="5.0" right="5.0" />
+         </padding></VBox>
+   </children>
+</AnchorPane>

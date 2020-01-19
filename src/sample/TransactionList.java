@@ -28,25 +28,29 @@ public class TransactionList {
 
     public void AddTransaction(Transaction newTransaction) {
         InsertTransaction(newTransaction);
-        debitTotal.add(newTransaction.getDebit());
-        creditTotal.add(newTransaction.getCredit());
+        debitTotal = new SimpleDoubleProperty(debitTotal.get() + newTransaction.getDebit());
+        creditTotal = new SimpleDoubleProperty(creditTotal.get() + newTransaction.getCredit());
     }
 
     private void InsertTransaction(Transaction newTransaction) {
+
         SimpleDateFormat d_format = new SimpleDateFormat("MM/dd/yyyy");
         Date newTransDate = d_format.parse(newTransaction.getDate(), new ParsePosition(0));
+        boolean added = false;
         for (int t = 0; t < transactionList.size(); t++) {
             Date curTransDate = d_format.parse(transactionList.get(t).getDate(), new ParsePosition(0));
             if (curTransDate.after(newTransDate)) {
                 transactionList.add(t, newTransaction);
+                added = true;
+                break;
             }
         }
-        transactionList.add(newTransaction);
+        if (!added) { transactionList.add(newTransaction); }
     }
 
     public void removeTransaction(Transaction t) {
-        debitTotal.subtract(t.getDebit());
-        creditTotal.subtract(t.getCredit());
+        debitTotal = new SimpleDoubleProperty(debitTotal.get() - t.getDebit());
+        creditTotal = new SimpleDoubleProperty(creditTotal.get() - t.getCredit());
         transactionList.remove(t);
     }
 

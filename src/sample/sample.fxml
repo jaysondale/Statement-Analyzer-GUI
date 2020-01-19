@@ -14,6 +14,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
+                <MenuItem fx:id="setCategory" mnemonicParsing="false" onAction="#assignCategory" text="Set Category" />
               <MenuItem mnemonicParsing="false" text="Delete" />
             </items>
           </Menu>
