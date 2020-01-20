@@ -18,6 +18,7 @@ import javafx.stage.WindowEvent;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -49,12 +50,13 @@ public class MainController implements Initializable {
     private ObservableList<TransactionList> catList;
     private TransactionList rawTransactions;
     private ObservableList<String> catLabels;
+    private Map<String, String> idMap;
 
 
     private void loadStatement(String csvPath) throws UnsupportedEncodingException {
         // Load in id mapping data
         JSONReader jsonReader = new JSONReader();
-        Map<String, String> idMap = jsonReader.readIDMAp(URLDecoder.decode(getClass().getResource(ID_MAP_JSON).getPath(), java.nio.charset.StandardCharsets.UTF_8.toString()));
+        idMap = jsonReader.readIDMAp(URLDecoder.decode(getClass().getResource(ID_MAP_JSON).getPath(), java.nio.charset.StandardCharsets.UTF_8.toString()));
 
         CSVReader reader = new CSVReader();
         ObservableList<Transaction> newTransactions = reader.readStatement(URLDecoder.decode(csvPath, java.nio.charset.StandardCharsets.UTF_8.toString()));
@@ -110,13 +112,22 @@ public class MainController implements Initializable {
 
         CategoryAssigner catAssigner = loader.getController();
         catAssigner.setTransaction(selected);
-        catAssigner.setCatList(catList, catLabels, tTable, catTable);
+        catAssigner.setCatList(catList, catLabels, tTable, catTable, idMap);
 
         Scene scene = new Scene(root);
         newStage.setScene(scene);
 
         newStage.show();
 
+    }
+
+    public void saveMap() {
+        JSONReader json = new JSONReader();
+        try {
+            json.saveIDMap(URLDecoder.decode(getClass().getResource(ID_MAP_JSON).getPath(), java.nio.charset.StandardCharsets.UTF_8.toString()), idMap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

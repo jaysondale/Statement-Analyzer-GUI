@@ -49,7 +49,9 @@ public class JSONReader {
 
         FileWriter fw = new FileWriter(fName);
         PrintWriter pw = new PrintWriter(fw);
-        pw.print(gsonString);
+        pw.write(gsonString);
+
         pw.close();
+        System.out.println("Json saved to " + fName);
     }
 }
