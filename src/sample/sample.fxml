@@ -3,60 +3,65 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainController">
+<AnchorPane fx:id="anchorPane" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainController">
    <children>
-      <MenuBar prefWidth="600.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-                <MenuItem fx:id="setCategory" mnemonicParsing="false" onAction="#assignCategory" text="Set Category" />
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-            <Menu mnemonicParsing="false" text="Month">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
-              </items>
-            </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-      <GridPane prefHeight="500.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+      <VBox>
          <children>
-            <TableView fx:id="tTable" prefHeight="500.0" prefWidth="200.0">
-              <columns>
-                <TableColumn fx:id="dateCol" prefWidth="75.0" text="Date" />
-                <TableColumn fx:id="idCol" prefWidth="75.0" text="Identifier" />
-                <TableColumn fx:id="debitCol" prefWidth="75.0" text="Debit" />
-                  <TableColumn fx:id="creditCol" prefWidth="75.0" text="Credit" />
-                  <TableColumn fx:id="transCatCol" prefWidth="75.0" text="Category" />
-              </columns>
-            </TableView>
-            <TableView fx:id="catTable" prefHeight="500.0" prefWidth="200.0" GridPane.columnIndex="1">
-              <columns>
-                <TableColumn fx:id="catCol" prefWidth="75.0" text="Category" />
-                <TableColumn fx:id="debBalCol" prefWidth="75.0" text="Debit" />
-                  <TableColumn fx:id="credBalCol" prefWidth="75.0" text="Credit" />
-                  <TableColumn fx:id="netBalCol" prefWidth="75.0" text="Net Balance" />
-              </columns>
-            </TableView>
+            <MenuBar prefWidth="600.0">
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                    <MenuItem fx:id="selDirectory" mnemonicParsing="false" onAction="#setStatementDirectory" text="Select Statement Directory" />
+                        <MenuItem mnemonicParsing="false" text="Save Categories" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                  <items>
+                      <MenuItem fx:id="setCategory" mnemonicParsing="false" onAction="#assignCategory" text="Set Category" />
+                    <MenuItem mnemonicParsing="false" text="Delete" />
+                  </items>
+                </Menu>
+                  <Menu mnemonicParsing="false" text="Month">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Action 1" />
+                    </items>
+                  </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <GridPane minHeight="497.0" minWidth="441.0" prefHeight="498.0" prefWidth="800.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="527.0" minWidth="10.0" prefWidth="500.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="425.0" minWidth="10.0" prefWidth="300.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <TableView fx:id="tTable">
+                    <columns>
+                      <TableColumn fx:id="dateCol" prefWidth="75.0" text="Date" />
+                      <TableColumn fx:id="idCol" prefWidth="200.0" text="Identifier" />
+                      <TableColumn fx:id="debitCol" prefWidth="75.0" text="Debit" />
+                        <TableColumn fx:id="creditCol" prefWidth="75.0" text="Credit" />
+                        <TableColumn fx:id="transCatCol" prefWidth="75.0" text="Category" />
+                    </columns>
+                  </TableView>
+                  <TableView fx:id="catTable" prefHeight="507.0" prefWidth="308.0" GridPane.columnIndex="1">
+                    <columns>
+                      <TableColumn fx:id="catCol" prefWidth="75.0" text="Category" />
+                      <TableColumn fx:id="debBalCol" prefWidth="75.0" text="Debit" />
+                        <TableColumn fx:id="credBalCol" prefWidth="75.0" text="Credit" />
+                        <TableColumn fx:id="netBalCol" prefWidth="75.0" text="Net Balance" />
+                    </columns>
+                  </TableView>
+               </children>
+            </GridPane>
          </children>
-      </GridPane>
+      </VBox>
    </children>
-</VBox>
+</AnchorPane>

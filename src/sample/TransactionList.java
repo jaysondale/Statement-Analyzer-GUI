@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.beans.Observable;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -73,6 +74,10 @@ public class TransactionList {
 
     public String getName() {
         return name.get();
+    }
+
+    public ObservableList<Transaction> getTransactionList() {
+        return transactionList;
     }
 
     public void setName(String newName) {

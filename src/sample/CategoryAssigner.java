@@ -1,15 +1,11 @@
 package sample;
 
-import javafx.beans.Observable;
+
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-import javax.swing.tree.TreeNode;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class CategoryAssigner {
 

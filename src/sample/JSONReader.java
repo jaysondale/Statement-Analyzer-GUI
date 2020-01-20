@@ -1,15 +1,20 @@
 package sample;
 
+import com.google.gson.reflect.TypeToken;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import com.google.gson.Gson;
 
 public class JSONReader {
 
@@ -35,5 +40,16 @@ public class JSONReader {
         }
 
         return idMap;
+    }
+
+    public void saveIDMap(String fName, Map<String, String> idMap) throws IOException {
+        Gson gson = new Gson();
+        Type gsonType = new TypeToken<HashMap>(){}.getType();
+        String gsonString = gson.toJson(idMap, gsonType);
+
+        FileWriter fw = new FileWriter(fName);
+        PrintWriter pw = new PrintWriter(fw);
+        pw.print(gsonString);
+        pw.close();
     }
 }

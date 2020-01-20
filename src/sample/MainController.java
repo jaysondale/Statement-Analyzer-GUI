@@ -10,16 +10,23 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Map;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
+
+    private final String ID_MAP_JSON = "id_map.json";
 
     // Transaction Table
     @FXML private TableView<Transaction> tTable;
@@ -36,12 +43,63 @@ public class MainController implements Initializable {
     @FXML private TableColumn<TransactionList, Double> credBalCol;
     @FXML private TableColumn<TransactionList, Double> netBalCol;
 
+    // Anchor pane
+    @FXML private AnchorPane anchorPane;
+
     private ObservableList<TransactionList> catList;
+    private TransactionList rawTransactions;
     private ObservableList<String> catLabels;
 
 
-    public void updateTransactions() {
+    private void loadStatement(String csvPath) throws UnsupportedEncodingException {
+        // Load in id mapping data
+        JSONReader jsonReader = new JSONReader();
+        Map<String, String> idMap = jsonReader.readIDMAp(URLDecoder.decode(getClass().getResource(ID_MAP_JSON).getPath(), java.nio.charset.StandardCharsets.UTF_8.toString()));
 
+        CSVReader reader = new CSVReader();
+        ObservableList<Transaction> newTransactions = reader.readStatement(URLDecoder.decode(csvPath, java.nio.charset.StandardCharsets.UTF_8.toString()));
+
+        // Classify transactions from existing dataset
+        for (Transaction t : newTransactions) {
+            if (idMap.containsKey(t.getID())){
+                // Set category in transaction object
+                String cat = idMap.get(t.getID());
+                t.setCategory(cat);
+
+                // Add transaction to category's transaction list
+                if (catLabels.contains(cat)) {
+                    for (TransactionList tl : catList) {
+                        if (tl.getName().equals(cat)) {
+                            tl.AddTransaction(t);
+                            break;
+                        }
+                    }
+                } else {
+                    TransactionList newList = new TransactionList(cat);
+                    newList.AddTransaction(t);
+                    catList.add(newList);
+                    catLabels.add(cat);
+                }
+            }
+            rawTransactions.AddTransaction(t);
+        }
+
+
+    }
+
+    public void setStatementDirectory() {
+        DirectoryChooser dirChoose = new DirectoryChooser();
+        dirChoose.setTitle("Select the directory where all statements are stored");
+        File newDir = dirChoose.showDialog(anchorPane.getScene().getWindow());
+        for (File file : newDir.listFiles()) {
+            if (file.getName().contains(".csv")) {
+                try {
+                    loadStatement(file.getPath());
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public void assignCategory() throws Exception{
@@ -66,40 +124,7 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         catList = FXCollections.observableArrayList();
         catLabels = FXCollections.observableArrayList();
-
-        // Load in statement data
-        URL csvFile = getClass().getResource("statement.csv");
-
-        // Load in id mapping data
-        JSONReader jsonReader = new JSONReader();
-        Map<String, String> idMap = jsonReader.readIDMAp("/Users/jaysondale/Google Drive/AI/Statement-Analyzer-GUI/src/sample/id_map.json");
-
-        CSVReader reader = new CSVReader();
-        ObservableList<Transaction> rawTransactions = reader.readStatement("/Users/jaysondale/Google Drive/AI/Statement-Analyzer-GUI/src/sample/statement.csv");
-
-        // Classify transactions from existing dataset
-        for (Transaction t : rawTransactions) {
-            if (idMap.containsKey(t.getID())){
-                // Set category in transaction object
-                String cat = idMap.get(t.getID());
-                t.setCategory(cat);
-
-                // Add transaction to category's transaction list
-                if (catLabels.contains(cat)) {
-                    for (TransactionList tl : catList) {
-                        if (tl.getName().equals(cat)) {
-                            tl.AddTransaction(t);
-                            break;
-                        }
-                    }
-                } else {
-                    TransactionList newList = new TransactionList(cat);
-                    newList.AddTransaction(t);
-                    catList.add(newList);
-                    catLabels.add(cat);
-                }
-            }
-        }
+        rawTransactions = new TransactionList("rawTransactions");
 
         // Prep transaction table columns
         dateCol.setCellValueFactory(new PropertyValueFactory<Transaction, String>("date"));
@@ -115,7 +140,7 @@ public class MainController implements Initializable {
         netBalCol.setCellValueFactory(new PropertyValueFactory<TransactionList, Double>("netTotal"));
 
         // Assign rawTransactions to tTable
-        tTable.setItems(rawTransactions);
+        tTable.setItems(rawTransactions.getTransactionList());
 
         // Assign catList to catTable
         catTable.setItems(catList);
