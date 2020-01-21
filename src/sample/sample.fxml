@@ -23,7 +23,18 @@
                 </Menu>
                   <Menu mnemonicParsing="false" text="Month">
                     <items>
-                      <MenuItem mnemonicParsing="false" text="Action 1" />
+                      <RadioMenuItem mnemonicParsing="false" text="January" fx:id="jan" onAction="#setMonth" />
+                        <RadioMenuItem mnemonicParsing="false" text="February" fx:id="feb" onAction="#setMonth" />
+                        <RadioMenuItem mnemonicParsing="false" text="March" fx:id="mar" onAction="#setMonth" />
+                        <RadioMenuItem mnemonicParsing="false" text="April" fx:id="apr" onAction="#setMonth" />
+                        <RadioMenuItem mnemonicParsing="false" text="May" fx:id="may" onAction="#setMonth" />
+                        <RadioMenuItem mnemonicParsing="false" text="June" fx:id="jun" onAction="#setMonth" />
+                        <RadioMenuItem mnemonicParsing="false" text="July" fx:id="jul" onAction="#setMonth" />
+                        <RadioMenuItem mnemonicParsing="false" text="August" fx:id="aug" onAction="#setMonth" />
+                        <RadioMenuItem mnemonicParsing="false" text="September" fx:id="sep" onAction="#setMonth" />
+                        <RadioMenuItem mnemonicParsing="false" text="October" fx:id="oct" onAction="#setMonth" />
+                        <RadioMenuItem mnemonicParsing="false" text="November" fx:id="nov" onAction="#setMonth" />
+                        <RadioMenuItem mnemonicParsing="false" text="December" fx:id="dec" onAction="#setMonth" />
                     </items>
                   </Menu>
                 <Menu mnemonicParsing="false" text="Help">

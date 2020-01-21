@@ -2,11 +2,11 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -14,7 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+
 
 
 import java.io.File;
@@ -28,6 +28,8 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
 
     private final String ID_MAP_JSON = "id_map.json";
+
+    @FXML RadioMenuItem jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec;
 
     // Transaction Table
     @FXML private TableView<Transaction> tTable;
@@ -51,6 +53,7 @@ public class MainController implements Initializable {
     private TransactionList rawTransactions;
     private ObservableList<String> catLabels;
     private Map<String, String> idMap;
+    private String month;
 
 
     private void loadStatement(String csvPath) throws UnsupportedEncodingException {
@@ -63,30 +66,59 @@ public class MainController implements Initializable {
 
         // Classify transactions from existing dataset
         for (Transaction t : newTransactions) {
-            if (idMap.containsKey(t.getID())){
-                // Set category in transaction object
-                String cat = idMap.get(t.getID());
-                t.setCategory(cat);
+            if (t.getDate().substring(0, 2).equals(month)) {
+                if (idMap.containsKey(t.getID())) {
+                    // Set category in transaction object
+                    String cat = idMap.get(t.getID());
+                    t.setCategory(cat);
 
-                // Add transaction to category's transaction list
-                if (catLabels.contains(cat)) {
-                    for (TransactionList tl : catList) {
-                        if (tl.getName().equals(cat)) {
-                            tl.AddTransaction(t);
-                            break;
+                    // Add transaction to category's transaction list
+                    if (catLabels.contains(cat)) {
+                        for (TransactionList tl : catList) {
+                            if (tl.getName().equals(cat)) {
+                                tl.AddTransaction(t);
+                                break;
+                            }
                         }
+                    } else {
+                        TransactionList newList = new TransactionList(cat);
+                        newList.AddTransaction(t);
+                        catList.add(newList);
+                        catLabels.add(cat);
                     }
-                } else {
-                    TransactionList newList = new TransactionList(cat);
-                    newList.AddTransaction(t);
-                    catList.add(newList);
-                    catLabels.add(cat);
                 }
+                rawTransactions.AddTransaction(t);
             }
-            rawTransactions.AddTransaction(t);
         }
 
+    }
 
+    public void setMonth() {
+        if (jan.isSelected()) {
+            month = "01";
+        } else if (feb.isSelected()) {
+            month = "02";
+        } else if (mar.isSelected()) {
+            month = "03";
+        } else if (apr.isSelected()) {
+            month = "04";
+        } else if (may.isSelected()) {
+            month = "05";
+        } else if (jun.isSelected()) {
+            month = "06";
+        } else if (jul.isSelected()) {
+            month = "07";
+        } else if (aug.isSelected()) {
+            month = "08";
+        } else if (sep.isSelected()) {
+            month = "09";
+        } else if (oct.isSelected()) {
+            month = "10";
+        } else if (nov.isSelected()) {
+            month = "11";
+        } else if (dec.isSelected()) {
+            month = "12";
+        }
     }
 
     public void setStatementDirectory() {
@@ -136,6 +168,8 @@ public class MainController implements Initializable {
         catList = FXCollections.observableArrayList();
         catLabels = FXCollections.observableArrayList();
         rawTransactions = new TransactionList("rawTransactions");
+
+        month = "01";
 
         // Prep transaction table columns
         dateCol.setCellValueFactory(new PropertyValueFactory<Transaction, String>("date"));
