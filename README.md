@@ -1,5 +1,5 @@
 # Statement Analyzer GUI
-#### Jayson Dale
+*Author: Jayson Dale*
 ## Goal
 Statement Analyzer GUI is a tool that can be used to classify transactions from various sources. The user creates categories in which transactions can be inserted, resulting in a very clean transaction summary.
 
